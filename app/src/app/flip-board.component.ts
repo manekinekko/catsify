@@ -5,7 +5,7 @@ import Tick from "@pqina/flip";
   selector: "app-flip-board",
   template: `
     <div #tick class="tick">
-      <div data-repeat="true" data-layout="horizontal center" data-transform="upper -> split -> delay(ltr, 100, 300)">
+      <div data-repeat="true" data-layout="horizontal center" data-transform="upper -> split -> delay(ltr, 100, 200)">
         <span data-view="flip" class="tick-char"></span>
       </div>
     </div>
@@ -83,7 +83,7 @@ import Tick from "@pqina/flip";
   ],
 })
 export class FlipBoardComponent {
-  @Input("value") value = "...";
+  @Input("value") value = "";
   @Input("max") maxChars = 20;
   @ViewChild("tick", {
     static: true,

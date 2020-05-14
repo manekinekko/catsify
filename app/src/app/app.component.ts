@@ -11,7 +11,7 @@ import { environment } from "src/environments/environment";
       <a
         *ngIf="generator?.ready"
         class="button"
-        href="https://twitter.com/intent/tweet?text=My new cat's name will be... {{ generator?.name }}! #MSBuild"
+        href="https://twitter.com/intent/tweet?text=My new cat's name will be... {{ generator?.name }}! Find yours at https://www.catsify.app (by @manekinekko) %23MSBuild"
         rel="noopener"
         target="__blank"
         >Tweet!</a
@@ -86,7 +86,6 @@ export class AppComponent {
     }, 4000);
   }
   async generate() {
-    this.generator = { name: "thinking...", ready: false };
     let { noun, adjective } = await (await fetch(environment.api)).json();
     this.generator = {
       name: `${this.camelCase(adjective)} ${this.camelCase(noun)}`,
