@@ -1,0 +1,27 @@
+[package]
+name = "catsify"
+version = "1.0.0"
+authors = ["Wassim Chegham <github@wassim.dev>"]
+edition = "2018"
+license = "MIT"
+repository = ""
+description = ""
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wasm-bindgen = "0.2.58"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+path = "rust/lib.rs"
+
+[[bin]]
+name = "generator"
+path = "rust/lib.rs"
+
+[profile.release]
+lto = true
+panic = "abort"
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

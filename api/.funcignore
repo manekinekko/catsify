@@ -1,0 +1,15 @@
+*.js.map
+*.ts
+.git*
+.vscode
+local.settings.json
+test
+node_modules
+
+BUILD.bazel
+bazel-out
+dist/api
+dist/cargo
+dist/func
+dist/out
+dist/testlogs
