@@ -15,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
       
     - name: Setup Rust toolchain
       uses: actions-rs/toolchain@v1
