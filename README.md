@@ -10,3 +10,9 @@ Catsify is a Cat names generator, hosted on Azure Static Web Apps. The tech stac
 
 - An [UI](./app) written in Angular v10 (preview).
 - An [API](./api) written in Rust, compiled to WASM and exposed through a Node.js serverless Function.
+
+### Bazel dependency graph
+
+<p align="center">
+    <img src="./api/docs/graph.png"/>
+</p>

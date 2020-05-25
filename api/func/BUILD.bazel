@@ -1,0 +1,32 @@
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_library(
+    name = "func",
+    srcs = ["index.ts"],
+    deps = [
+        ":func_lib",
+        "@npm//@azure/functions",
+    ],
+)
+
+ts_library(
+    name = "func_lib",
+    srcs = ["wasm_loader.ts"],
+    deps = [
+        "@npm//@types/node",
+    ],
+    data = [
+        ":generator_wasm"
+    ]
+)
+
+genrule(
+    name = "generator_wasm",
+    srcs = [
+        "//rust:generator_bindgen_bg.wasm"
+    ],
+    outs = ["generator.wasm"],
+    cmd = "mv $(SRCS) $@",
+)

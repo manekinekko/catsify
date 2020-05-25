@@ -1,0 +1,49 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_rust//rust:rust.bzl", "rust_binary")
+load("@io_bazel_rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+
+genrule(
+    name = "generator_wasm_bin",
+    srcs = [
+        ":generator_bindgen_bg.wasm"
+    ],
+    outs = ["generator_bindgen_bg"],
+    cmd = "mv $(SRCS) $@",
+)
+
+rust_binary(
+    name = "generator_rust_wasm",
+    srcs = ["lib.rs"],
+    edition = "2018",
+    rustc_flags = [
+        "--crate-type=cdylib",
+        "--codegen=opt-level=2",
+        "--codegen=lto=thin",
+        "--codegen=opt-level=z",
+        "--codegen=panic=abort",
+    ],
+    deps = [
+        "@io_bazel_rules_rust//wasm_bindgen/raze:wasm_bindgen",
+    ],
+)
+
+rust_wasm_bindgen(
+    name = "generator_bindgen",
+    wasm_file = ":generator_rust_wasm",
+    bindgen_flags = ["--target=nodejs", "--keep-debug"]
+)
+
+nodejs_binary(
+    name = "generator_wasm",
+    args = [
+        "--experimental-wasm-modules",
+        "--experimental-modules"
+    ],
+    data = [
+        ":generator_wasm_bin",
+        ":generator_bindgen",
+    ],
+    entry_point = ":test.js",
+)
