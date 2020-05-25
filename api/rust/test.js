@@ -40,7 +40,9 @@ const generate_name_str = function(seed, wasm) {
     const result = await WebAssembly.instantiate(bytes);
     const wasm = await Promise.resolve(result.instance.exports);
     const seed = (Date.now() % 1000) | 0;
-    console.log(generate_name_str(seed, wasm));
+    console.log('\n******************************************************')
+    console.log('Generated name:', generate_name_str(seed, wasm));
+    console.log('******************************************************')
   } catch (error) {
     console.error('FAIL');
     console.error(error);

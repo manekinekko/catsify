@@ -1,5 +1,4 @@
-bazel-*
 node_modules
-target
 dist
-pkg
+bazel-out
+
