@@ -13,7 +13,8 @@ build --disk_cache=~/.cache/bazel-disk-cache
 # Be aware that this will still create a bazel-out symlink in
 # your project directory, which you must exclude from version control and your
 # editor's search path.
-build --symlink_prefix=dist/
+build --symlink_prefix=bazel-dist/
+
 # To disable the symlinks altogether (including bazel-out) you can use
 # build --symlink_prefix=/
 # however this makes it harder to find outputs.
