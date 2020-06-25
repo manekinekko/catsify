@@ -1132,7 +1132,7 @@ pub fn generate_name_str(seed: i32) -> String {
 ];
 // #endregion
 // #region
-// NOTE: when adding/removing words fron this array, 
+// NOTE: when adding/removing words from this array, 
 // please update the size of the array
 const NOUNS: [&str; 1201] = [
 "abbey",
