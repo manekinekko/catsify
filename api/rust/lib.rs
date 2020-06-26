@@ -10,7 +10,7 @@ pub fn generate_name_str(seed: i32) -> String {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // #region
-// NOTE: when adding/removing words fron this array, 
+// NOTE: when adding/removing words from this array, 
 // please update the size of the array
     const ADJECTIVES: [&str; 1116] = [
 "aback",
