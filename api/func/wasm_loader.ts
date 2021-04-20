@@ -39,6 +39,7 @@ export const generate = async function() {
   const result = await WebAssembly.instantiate(bytes);
   const wasm: any = await Promise.resolve(result.instance.exports);
   const retptr = 8;
+  const seed = Date.now() % 1000 | 0;
   const ret = wasm.generate_name_str(retptr, 0);
   const memi32 = getInt32Memory(wasm);
   const v0 = getStringFromWasm(
