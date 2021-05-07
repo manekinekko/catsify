@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { environment } from "src/environments/environment";
+import { GeneratorService } from "./generator.service";
 
 @Component({
   selector: "app-root",
@@ -74,6 +75,8 @@ export class AppComponent {
   generator: { name: string; ready: boolean };
   showButton: boolean;
 
+  constructor(private readonly generatorService: GeneratorService) {}
+
   ngOnInit() {
     this.showButton = false;
     setTimeout((_) => {
@@ -86,7 +89,8 @@ export class AppComponent {
     }, 4000);
   }
   async generate() {
-    let { noun, adjective } = await (await fetch(environment.api)).json();
+    // let { noun, adjective } = await (await fetch(environment.api)).json();
+    let { noun, adjective } = this.generatorService.generate();
     this.generator = {
       name: `${this.camelCase(adjective)} ${this.camelCase(noun)}`,
       ready: true,
