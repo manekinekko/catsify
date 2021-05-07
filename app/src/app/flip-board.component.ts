@@ -5,7 +5,7 @@ import Tick from "@pqina/flip";
   selector: "app-flip-board",
   template: `
     <div #tick class="tick">
-      <div data-repeat="true" data-layout="horizontal center" data-transform="upper -> split -> delay(ltr, 100, 200)">
+      <div class="tick-wrapper" data-repeat="true" data-layout="horizontal center" data-transform="upper -> split -> delay(ltr, 100, 200)">
         <span data-view="flip" class="tick-char"></span>
       </div>
     </div>
@@ -23,6 +23,10 @@ import Tick from "@pqina/flip";
         font-family: arial, sans-serif;
       }
 
+      .tick-wrapper {
+        flex-wrap: wrap;
+      }
+
       .tick-flip,
       .tick-text-inline {
         font-size: 2.5em;
@@ -34,7 +38,7 @@ import Tick from "@pqina/flip";
       }
 
       .tick-char {
-        width: 1.5em;
+        width: 1.1em;
       }
 
       .tick-text-inline {

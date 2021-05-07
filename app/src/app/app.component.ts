@@ -21,7 +21,7 @@ import { environment } from "src/environments/environment";
   styles: [
     `
       app-flip-board {
-        margin: 6em;
+        margin: 6em 1em;
         display: block;
       }
       h1 {
