@@ -18,5 +18,6 @@ npm run build
 rm -fr dist/func
 
 mkdir -p dist/func
+tree -L 4
 find bazel-dist/bin/func -name '*.js' -exec cp "{}" dist/func/ \;
 find bazel-dist/bin/rust -name '*.wasm' -exec cp "{}" dist/func/ \;
