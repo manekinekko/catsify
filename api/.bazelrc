@@ -5,8 +5,11 @@
 # The full list of Bazel options: https://docs.bazel.build/versions/master/command-line-reference.html
 
 # Cache action outputs on disk so they persist across output_base and bazel shutdown (eg. changing branches)
-#build --disk_cache=~/.cache/bazel-disk-cache
-build --remote_cache=http://40.121.41.231/cache/
+build --disk_cache=~/.cache/bazel-disk-cache
+# build --remote_cache=http://40.121.41.231/cache/
+
+# Bazel picks up host-OS-specific config lines from bazelrc files
+build --enable_platform_specific_config
 
 # Bazel will create symlinks from the workspace directory to output artifacts.
 # Build results will be placed in a directory called "dist/bin"
@@ -14,8 +17,7 @@ build --remote_cache=http://40.121.41.231/cache/
 # Be aware that this will still create a bazel-out symlink in
 # your project directory, which you must exclude from version control and your
 # editor's search path.
-build --symlink_prefix=bazel-dist/
-
+build --symlink_prefix=dist/
 # To disable the symlinks altogether (including bazel-out) you can use
 # build --symlink_prefix=/
 # however this makes it harder to find outputs.
@@ -63,12 +65,6 @@ build:debug --compilation_mode=dbg
 # This prevents accidentally depending on this feature, which Bazel will remove.
 build --nolegacy_external_runfiles
 
-# Turn on the "Managed Directories" feature.
-# This allows Bazel to share the same node_modules directory with other tools
-# NB: this option was introduced in Bazel 0.26
-# See https://docs.bazel.build/versions/master/command-line-reference.html#flag--experimental_allow_incremental_repository_updates
-common --experimental_allow_incremental_repository_updates
-
 # Turn on --incompatible_strict_action_env which was on by default
 # in Bazel 0.21.0 but turned off again in 0.22.0. Follow
 # https://github.com/bazelbuild/bazel/issues/7026 for more details.
@@ -77,6 +73,10 @@ common --experimental_allow_incremental_repository_updates
 # See https://github.com/angular/angular/issues/27514.
 build --incompatible_strict_action_env
 run --incompatible_strict_action_env
+
+# When running `bazel coverage` --instrument_test_targets needs to be set in order to 
+# collect coverage information from test targets
+coverage --instrument_test_targets
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
@@ -87,3 +87,5 @@ run --incompatible_strict_action_env
 # rather than user.bazelrc as suggested in the Bazel docs)
 try-import %workspace%/.bazelrc.user
 
+
+build --verbose_failures -s --sandbox_debug

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const wasmFile = path.join(__dirname, 'generator_bindgen_bg.wasm');
+const wasmFile = path.join(__dirname, 'catsify_bindgen_bg.wasm');
 
 // #region
 let cachedTextDecoder = new TextDecoder('utf-8');

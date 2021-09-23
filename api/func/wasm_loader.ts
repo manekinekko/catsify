@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// the WASM file is copied to dis/func during the build
-const wasmFile = path.join(__dirname, 'generator.wasm');
+// the WASM file is available in the rust folder
+const wasmFile = path.join(__dirname, '../rust/catsify_bindgen_bg.wasm');
 
 // #region
 let cachedTextDecoder = new TextDecoder('utf-8');
@@ -40,7 +40,7 @@ export const generate = async function() {
   const wasm: any = await Promise.resolve(result.instance.exports);
   const retptr = 8;
   const seed = Date.now() % 1000 | 0;
-  const ret = wasm.generate_name_str(retptr, seed);
+  const ret = wasm.catsify(retptr, seed);
   const memi32 = getInt32Memory(wasm);
   const v0 = getStringFromWasm(
     wasm,

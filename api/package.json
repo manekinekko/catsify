@@ -29,28 +29,29 @@
     "func:watch": "ibazel build //func:func",
     "func:start:host": "func start",
     "//WASM--": "//",
-    "wasm:build": "bazelisk build //rust:generator_wasm",
+    "wasm:build": "bazelisk build //rust:catsify_bindgen",
     "//PUBLIC--": "//",
     "prestart": "npm-run-all wasm:build func:build",
     "start": "npm-run-all --parallel func:start:host func:watch",
     "build": "npm-run-all func:build",
     "query": "bazelisk query --noimplicit_deps 'deps(//...)' --output graph | dot -Tpng > docs/graph.png",
-    "test": "bazelisk run //rust:generator_wasm",
+    "test": "bazelisk run //rust:catsify_bindgen",
     "clean": "bazelisk clean --expunge && rimraf dist"
   },
   "description": "",
   "devDependencies": {
-    "@azure/functions": "^1.2.0",
-    "@bazel/bazelisk": "^1.4.0",
-    "@bazel/ibazel": "^0.13.1",
-    "@bazel/typescript": "^1.6.1",
-    "@types/node": "^13.13.9",
-    "azure-functions-core-tools": "^2.7.2508",
+    "@azure/functions": "^1.2.3",
+    "@bazel/bazelisk": "latest",
+    "@bazel/ibazel": "latest",
+    "@bazel/buildifier": "latest",
+    "@bazel/typescript": "^4.2.0",
+    "@types/node": "^16.9.6",
+    "azure-functions-core-tools": "^3.0.3734",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^3.3.3"
+    "typescript": "^4.2.0"
   },
   "engines": {
-    "node": "^12"
+    "node": "^14"
   }
 }

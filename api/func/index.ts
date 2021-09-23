@@ -2,7 +2,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 const { generate } = require("./wasm_loader");
 
-const func: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+const func: AzureFunction = async function (context: Context, _req: HttpRequest): Promise<void> {
   try {
     const name: string = await generate();
     const [adjective, noun] = name.split(" ");
@@ -15,6 +15,8 @@ const func: AzureFunction = async function (context: Context, req: HttpRequest):
       },
     };
   } catch (error) {
+    console.log({error});
+    
     context.res = {
       body: {
         error,

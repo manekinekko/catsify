@@ -1,7 +1,14 @@
-# Bazel workspace created by @bazel/create 1.6.1
+# Bazel workspace created by @bazel/create 4.2.0
+# The WORKSPACE file tells Bazel that this directory is a "workspace", which is like a project root.
+# The content of this file specifies all the external dependencies Bazel needs to perform a build.
+
+####################################
+# ESModule imports (and TypeScript imports) can be absolute starting with the workspace name.
+# The name of the workspace should match the npm package where we publish, so that these
+# imports also make sense when referencing the published package.
 
 # Declares that this directory is the root of a Bazel workspace.
-# See https://docs.bazel.build/versions/master/build-ref.html#workspace
+# See https://docs.bazel.build/versions/main/build-ref.html#workspace
 workspace(
     # How this workspace would be referenced with absolute labels from another workspace
     name = "catsify",
@@ -10,63 +17,65 @@ workspace(
     managed_directories = {"@npm": ["node_modules"]},
 )
 
-# Install the nodejs "bootstrap" package
-# This provides the basic tools for running and packaging nodejs programs in Bazel
+# These rules are built-into Bazel but we need to load them first to download more rules
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-    name = "build_bazel_rules_nodejs",
-    sha256 = "d14076339deb08e5460c221fae5c5e9605d2ef4848eee1f0c81c9ffdc1ab31c1",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/1.6.1/rules_nodejs-1.6.1.tar.gz"],
-)
-
-
-http_archive(
-    name = "io_bazel_rules_rust",
-    sha256 = "c80c470ddbbed036f376d56eec4fe0585d7354cccc1f9c8d761498a07997c020",
-    strip_prefix = "rules_rust-e0dcca40f303e76c4347b9cf541d757edb029441",
-    urls = [
-        "https://github.com/bazelbuild/rules_rust/archive/e0dcca40f303e76c4347b9cf541d757edb029441.tar.gz",
-    ],
-)
-# local_repository(
-#     name = "io_bazel_rules_rust",
-#     path = "/Users/wassimchegham/oss/rules_rust"
-# )
 
 http_archive(
     name = "bazel_skylib",
+    sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
     ],
-    sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
 )
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-bazel_skylib_workspace()
 
-load("@io_bazel_rules_rust//rust:repositories.bzl", "rust_repositories")
-rust_repositories()
+# Fetch rules_nodejs so we can install our npm dependencies
+http_archive(
+    name = "build_bazel_rules_nodejs",
+    sha256 = "4e1a5633267a0ca1d550cced2919dd4148575c0bafd47608b88aea79c41b5ca3",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.2.0/rules_nodejs-4.2.0.tar.gz"],
+)
 
-load("@io_bazel_rules_rust//wasm_bindgen:repositories.bzl", "rust_wasm_bindgen_repositories")
+# Fetch rust rules for compiling rust files
+http_archive(
+    name = "rules_rust",
+    sha256 = "195e10ba6365500b77e1ff335e03f67f89ecbd0cf95d18ea77d98b279182f064",
+    # sha256 = "531bdd470728b61ce41cf7604dc4f9a115983e455d46ac1d0c1632f613ab9fc3",
+    strip_prefix = "rules_rust-af0c5adfb564cd83198cdc31709843805f237c3a",
+    urls = [
+        # `main` branch as of 2021-08-23
+        # "https://github.com/bazelbuild/rules_rust/archive/d8238877c0e552639d3e057aadd6bfcf37592408.tar.gz",
+        "https://github.com/manekinekko/rules_rust/archive/af0c5adfb564cd83198cdc31709843805f237c3a.tar.gz",
+    ],
+)
+
+# For development purposes:
+# local_repository(
+#     name = "rules_rust",
+#     path = "/Users/wassimchegham/oss/rules_rust"
+# )
+
+load("@rules_rust//rust:repositories.bzl", "rust_repositories")
+
+rust_repositories(
+    edition = "2018",
+    version = "1.53.0",
+)
+
+load("@rules_rust//wasm_bindgen:repositories.bzl", "rust_wasm_bindgen_repositories")
+
 rust_wasm_bindgen_repositories()
 
-load("@io_bazel_rules_rust//:workspace.bzl", "bazel_version")
-bazel_version(name = "bazel_version")
+# Check the bazel version and download npm dependencies
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
 
-# The npm_install rule runs yarn anytime the package.json or package-lock.json file changes.
-# It also extracts any Bazel rules distributed in an npm package.
-load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
+node_repositories(
+    node_version = "14.15.5",
+)
+
 npm_install(
     # Name this npm so that Bazel Label references look like @npm//package
     name = "npm",
     package_json = "//:package.json",
     package_lock_json = "//:package-lock.json",
 )
-
-# Install any Bazel rules which were extracted earlier by the npm_install rule.
-load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-install_bazel_dependencies()
-
-# Setup TypeScript toolchain
-load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
-ts_setup_workspace()
