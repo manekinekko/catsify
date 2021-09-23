@@ -2,6 +2,8 @@
 
 set -ex
 
+tree -L 4
+
 CI=true
 api="$(pwd)/api"
 
