@@ -14,10 +14,8 @@ ts_library(
 ts_library(
     name = "func_lib",
     srcs = ["wasm_loader.ts"],
-    data = [
-        "//rust:catsify_bindgen",
-    ],
     deps = [
+        "//rust:catsify_bindgen",
         "@npm//@types/node",
     ],
 )

@@ -35,7 +35,7 @@
     "start": "npm-run-all --parallel func:start:host func:watch",
     "build": "npm-run-all func:build",
     "query": "bazelisk query --noimplicit_deps 'deps(//...)' --output graph | dot -Tpng > docs/graph.png",
-    "test": "bazelisk run //rust:catsify_bindgen",
+    "test": "bazelisk run //rust:catsify_test",
     "clean": "bazelisk clean --expunge && rimraf dist"
   },
   "description": "",

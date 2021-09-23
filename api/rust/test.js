@@ -24,9 +24,9 @@ function getStringFromWasm(wasm, ptr, len) {
   return cachedTextDecoder.decode(getUint8Memory(wasm).subarray(ptr, ptr + len));
 }
 
-const generate_name_str = function(seed, wasm) {
+const catsify = function(seed, wasm) {
   const retptr = 8;
-  const ret = wasm.generate_name_str(retptr, seed);
+  const ret = wasm.catsify(retptr, seed);
   const memi32 = getInt32Memory(wasm);
   const v0 = getStringFromWasm(wasm, memi32[retptr / 4 + 0], memi32[retptr / 4 + 1]).slice();
   wasm.__wbindgen_free(memi32[retptr / 4 + 0], memi32[retptr / 4 + 1] * 1);
@@ -41,7 +41,7 @@ const generate_name_str = function(seed, wasm) {
     const wasm = await Promise.resolve(result.instance.exports);
     const seed = (Date.now() % 1000) | 0;
     console.log('\n******************************************************')
-    console.log('Generated name:', generate_name_str(seed, wasm));
+    console.log('Generated name:', catsify(seed, wasm));
     console.log('******************************************************')
   } catch (error) {
     console.error('FAIL');
