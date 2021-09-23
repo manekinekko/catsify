@@ -23,7 +23,7 @@ rust_binary(
 
 # Generating WebAssembly bindings for //rust:catsify_bin
 rust_wasm_bindgen(
-    name = "catsify_bindgen",
+    name = "catsify",
     bindgen_flags = ["--keep-debug"],
     target = "nodejs",
     wasm_file = ":catsify_bin",
@@ -37,7 +37,7 @@ nodejs_binary(
     ],
     data = [
         ":catsify_bin",
-        ":catsify_bindgen",
+        ":catsify",
     ],
     entry_point = ":test.js",
 )

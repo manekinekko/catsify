@@ -13,10 +13,8 @@ curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 npm run build
 
 # Note: Oryx skips non-regular (symlinks) files. Give it regular files!
-rm -fr dist/func dist/rust
+rm -fr dist/func
 
 mkdir -p dist/func
 find bazel-dist/bin/func -name '*.js' -exec cp "{}" dist/func/ \;
-
-mkdir -p dist/rust
-find bazel-dist/bin/rust -name '*.wasm' -exec cp "{}" dist/rust/ \;
+find bazel-dist/bin/rust -name '*.wasm' -exec cp "{}" dist/func/ \;
