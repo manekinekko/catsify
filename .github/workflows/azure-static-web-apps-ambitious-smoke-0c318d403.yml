@@ -24,10 +24,10 @@ jobs:
         with:
           toolchain: stable
 
-      - name: Setup Node.js 12
+      - name: Setup Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Build
         run: "./scripts/build.linux.sh"
