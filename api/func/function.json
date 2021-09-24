@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/bin/func/index.js"
+  "scriptFile": "../dist/func/index.js"
 }
