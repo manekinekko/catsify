@@ -49,6 +49,12 @@ jobs:
           app_build_command: "npm run build -- --prod"
           api_build_command: "echo 'manually building the API (see ./scripts/build.linux.sh)'"
           ###### End of Repository/Build Configurations ######
+        env:
+          ENABLE_MULTIPLATFORM_BUILD: true
+          DISABLE_CHECKERS: true
+          PLATFORM_NAME: "nodejs"
+          DISABLE_NODEJS_BUILD: true
+          ORYX_APP_TYPE: "static-sites"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
