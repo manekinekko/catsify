@@ -50,9 +50,8 @@ jobs:
           api_build_command: "echo 'manually building the API (see ./scripts/build.linux.sh)'"
           ###### End of Repository/Build Configurations ######
         env:
-          DISABLE_CHECKERS: true
-          PLATFORM_NAME: "nodejs"
-          ORYX_APP_TYPE: "static-sites"
+          PRE_BUILD_SCRIPT_PATH: "./scripts/prebuild.sh"
+          POST_BUILD_SCRIPT_PATH: "./scripts/postbuild.sh"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
