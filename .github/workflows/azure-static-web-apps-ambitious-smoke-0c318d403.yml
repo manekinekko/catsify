@@ -51,7 +51,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           DISABLE_CHECKERS: true
-          PLATFORM_NAME: "node"
+          PLATFORM_NAME: "nodejs"
           ORYX_APP_TYPE: "static-sites"
 
   close_pull_request_job:
