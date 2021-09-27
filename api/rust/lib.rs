@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 ////////////////////////////////////////////////////////////////////////////////////////////////
 #[wasm_bindgen]
-pub fn generate_name_str(seed: i32) -> String {
+pub fn catsify(seed: i32) -> String {
     // the seed is coming from the JS side
     let a = seed % (ADJECTIVES.len() as i32);
     let b = seed % (NOUNS.len() as i32);
@@ -2340,5 +2340,5 @@ const NOUNS: [&str; 1201] = [
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 pub fn main() {
-    println!("{:?}", generate_name_str(1));
+    println!("{:?}", catsify(1));
 }

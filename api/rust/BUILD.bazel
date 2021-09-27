@@ -1,20 +1,12 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_rust//rust:rust.bzl", "rust_binary")
-load("@io_bazel_rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
+load("@rules_rust//rust:rust.bzl", "rust_binary")
+load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 
-genrule(
-    name = "generator_wasm_bin",
-    srcs = [
-        ":generator_bindgen_bg.wasm"
-    ],
-    outs = ["generator_bindgen_bg"],
-    cmd = "mv $(SRCS) $@",
-)
-
+# Compile the rust code
 rust_binary(
-    name = "generator_rust_wasm",
+    name = "catsify_bin",
     srcs = ["lib.rs"],
     edition = "2018",
     rustc_flags = [
@@ -25,25 +17,27 @@ rust_binary(
         "--codegen=panic=abort",
     ],
     deps = [
-        "@io_bazel_rules_rust//wasm_bindgen/raze:wasm_bindgen",
+        "@rules_rust//wasm_bindgen/raze:wasm_bindgen",
     ],
 )
 
+# Generating WebAssembly bindings for //rust:catsify_bin
 rust_wasm_bindgen(
-    name = "generator_bindgen",
-    wasm_file = ":generator_rust_wasm",
-    bindgen_flags = ["--target=nodejs", "--keep-debug"]
+    name = "catsify",
+    bindgen_flags = ["--keep-debug"],
+    target = "nodejs",
+    wasm_file = ":catsify_bin",
 )
 
 nodejs_binary(
-    name = "generator_wasm",
+    name = "catsify_test",
     args = [
         "--experimental-wasm-modules",
-        "--experimental-modules"
+        "--experimental-modules",
     ],
     data = [
-        ":generator_wasm_bin",
-        ":generator_bindgen",
+        ":catsify_bin",
+        ":catsify",
     ],
     entry_point = ":test.js",
 )

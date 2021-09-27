@@ -1,3 +1,4 @@
+.bazelrc.user
 bazel-*
 node_modules
 target

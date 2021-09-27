@@ -75,7 +75,7 @@ export class AppComponent {
   generator: { name: string; ready: boolean };
   showButton: boolean;
 
-  constructor(private readonly generatorService: GeneratorService) {}
+  constructor(private readonly generatorService: GeneratorService) { }
 
   ngOnInit() {
     this.showButton = false;
@@ -89,8 +89,14 @@ export class AppComponent {
     }, 4000);
   }
   async generate() {
-    // let { noun, adjective } = await (await fetch(environment.api)).json();
-    let { noun, adjective } = this.generatorService.generate();
+    let { noun = '', adjective = '' } = {};
+    try {
+      ({ noun, adjective } = await (await fetch(environment.api)).json());
+    }
+    catch (e) {
+      ({ noun, adjective } = this.generatorService.generate());
+    }
+
     this.generator = {
       name: `${this.camelCase(adjective)} ${this.camelCase(noun)}`,
       ready: true,
