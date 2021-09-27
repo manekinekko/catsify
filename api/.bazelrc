@@ -5,8 +5,8 @@
 # The full list of Bazel options: https://docs.bazel.build/versions/master/command-line-reference.html
 
 # Cache action outputs on disk so they persist across output_base and bazel shutdown (eg. changing branches)
-# build --disk_cache=~/.cache/bazel-disk-cache
-build --remote_cache=http://40.89.168.242:4200
+build --disk_cache=~/.cache/bazel-disk-cache
+# build --remote_cache=http://40.89.168.242:4200
 
 # Bazel picks up host-OS-specific config lines from bazelrc files
 build --enable_platform_specific_config
